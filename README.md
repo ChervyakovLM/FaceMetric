@@ -11,20 +11,20 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../Release -DTCLAP_INCLU
 RUN VERIFICATION
 
 FLAGS\
---split - path to split directory, required
---config - path to FaceEngine config directory, default: input/config
---extract_list - path to extract list file, default: input/extract.txt
---extract_prefix - path to images directory, default: input/images
---grayscale - open images as grayscale, default: false
---count_proc - count extract processes, default: thread::hardware_concurrency()
---extra_timings - print extra timings: percentile, min, max, std_dev, default: false
---extract_info - logging additional extract results: eyes, quality, etc, default: false
---debug_info - logging debug output, default: false
---desc_size - descriptor size, default: 512
---percentile - percentile in %, default: 90
---do_extract - do extract stage, default: true
---do_match - do match stage, default: true
---do_ROC - do calc ROC stage, default: true
+--split - path to split directory, required\
+--config - path to FaceEngine config directory, default: input/config\
+--extract_list - path to extract list file, default: input/extract.txt\
+--extract_prefix - path to images directory, default: input/images\
+--grayscale - open images as grayscale, default: false\
+--count_proc - count extract processes, default: thread::hardware_concurrency()\
+--extra_timings - print extra timings: percentile, min, max, std_dev, default: false\
+--extract_info - logging additional extract results: eyes, quality, etc, default: false\
+--debug_info - logging debug output, default: false\
+--desc_size - descriptor size, default: 512\
+--percentile - percentile in %, default: 90\
+--do_extract - do extract stage, default: true\
+--do_match - do match stage, default: true\
+--do_ROC - do calc ROC stage, default: true\
 
 ./checkFaceApi_V --split=./verification
 

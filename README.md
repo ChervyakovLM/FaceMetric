@@ -24,7 +24,7 @@ FLAGS\
 --percentile - percentile in %, default: 90\
 --do_extract - do extract stage, default: true\
 --do_match - do match stage, default: true\
---do_ROC - do calc ROC stage, default: true\
+--do_ROC - do calc ROC stage, default: true
 
 ./checkFaceApi_V --split=./verification
 
@@ -33,7 +33,7 @@ fpr - 10^-4, tpr - 0.828\
 fpr - 10^-5, tpr - 0.740\
 fpr - 10^-6, tpr - 0.628\
 fpr - 10^-7, tpr - 0.460\
-fpr - 10^-8, tpr - 0.133\
+fpr - 10^-8, tpr - 0.133
 
 RUN IDENTIFICATION 
 
@@ -60,7 +60,7 @@ FLAGS\
 --do_insert - do insert stage, default: true\
 --do_remove - do remove stage, default: true\
 --do_search - do search stage, default: true\
---do_tpir - do calc TPIR/FPIR stage, default: true\
+--do_tpir - do calc TPIR/FPIR stage, default: true
 
 ./checkFaceApi_I --split=./identification
 
@@ -68,19 +68,19 @@ OUT\
 I0824 17:56:28.947021 54252 in_out.cpp:224] General:\
 fpir - 10^-1, tpir - 0.942\
 fpir - 10^-2, tpir - 0.887\
-fpir - 10^-3, tpir - 0.408\
+fpir - 10^-3, tpir - 0.408
 
 I0824 17:56:28.947422 54252 in_out.cpp:224] Rank 1:\
 fpir - 10^-1, tpir - 0.940\
 fpir - 10^-2, tpir - 0.887\
-fpir - 10^-3, tpir - 0.408\
+fpir - 10^-3, tpir - 0.408
 
 I0824 17:56:28.947809 54252 in_out.cpp:224] Rank 5:\
 fpir - 10^-1, tpir - 0.942\
 fpir - 10^-2, tpir - 0.887\
-fpir - 10^-3, tpir - 0.408\
+fpir - 10^-3, tpir - 0.408
 
 I0824 17:56:28.948201 54252 in_out.cpp:224] Rank 20:\
 fpir - 10^-1, tpir - 0.942\
 fpir - 10^-2, tpir - 0.887\
-fpir - 10^-3, tpir - 0.408\
+fpir - 10^-3, tpir - 0.408

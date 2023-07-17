@@ -94,7 +94,23 @@ REQUIREMENTS\
 BUILD\
  cmake -DCMAKE\_BUILD\_TYPE=Release -DCMAKE\_INSTALL\_PREFIX=../Release -DTCLAP\_INCLUDE\_DIR={PATH}/tclap/include -DFACE\_API\_ROOT\_DIR={PATH}/FaceMetric/CI/face\_api\_test ..
 
-RUN VERIFICATION
+RUN VERIFICATION\
+Performing verification steps:
+ - extraction of biometric templates
+ - calculation of the degree of correspondence between biometric templates
+ - calculation of TPR/FPR metrics
+   
+Running all stages:\
+ ./checkFaceApi_V –split=./verification
+ 
+Starting the biometric template extraction step:\
+ ./checkFaceApi_V –split=./verification –do_match=0 –do_ROC=0
+ 
+Starting the stage of calculating the degree of correspondence between biometric templates:\
+ ./checkFaceApi_V –split=./verification –do_extract=0 –do_ROC=0
+ 
+Starting the TPR/FPR metrics calculation step:\
+ ./checkFaceApi_V –split=./verification –do_extract=0 –do_match=0
 
 FLAGS\
  --split - path to split directory, required\
@@ -112,16 +128,42 @@ FLAGS\
  --do\_match - do match stage, default: true\
  --do\_ROC - do calc ROC stage, default: true
 
-./checkFaceApi\_V --split=./verification
-
-OUT\
+OUTPUT EXAMPLE\
  fpr - 10^-4, tpr - 0.828\
  fpr - 10^-5, tpr - 0.740\
  fpr - 10^-6, tpr - 0.628\
  fpr - 10^-7, tpr - 0.460\
  fpr - 10^-8, tpr - 0.133
 
-RUN IDENTIFICATION
+RUN IDENTIFICATION\
+Performing identification steps:
+ - extraction of biometric templates
+ - building a search index
+ - search for close biometric templates
+ - inserting biometric templates into the search index
+ - removal of biometric templates from the search index
+ - calculation of TPIR/FPIR metrics
+
+Running all stages:\
+ ./checkFaceApi_I –split=./identification
+ 
+Starting the biometric template extraction step:\
+ ./checkFaceApi_I –split=./identification –do_graph=0 –do_search=0 –do_insert=0 –do_remove=0 –do_tpir=0
+ 
+Starting the stage of building a search index:\
+ ./checkFaceApi_I –split=./identification –do_extract=0 –do_search=0 –do_insert=0 –do_remove=0 –do_tpir=0
+
+Launching the stage of searching for similar biometric templates:\
+ ./checkFaceApi_I –split=./identification –do_extract=0 –do_graph=0 –do_insert=0 –do_remove=0 –do_tpir=0
+
+Launching the stage of inserting biometric templates into the search index:\
+ ./checkFaceApi_I –split=./identification –do_extract=0 –do_graph=0 –do_search=0 –do_remove=0 –do_tpir=0
+ 
+Starting the step of removing biometric templates from the search index:\
+ ./checkFaceApi_I –split=./identification –do_extract=0 –do_graph=0 –do_search=0 –do_insert=0 –do_tpir=0
+ 
+Starting the TPIR/FPIR metrics calculation step:\
+ ./checkFaceApi_I –split=./identification –do_extract=0 –do_graph=0 –do_search=0 –do_insert=0 –do_remove=0
 
 FLAGS\
  --split - path to split directory, required\
@@ -150,8 +192,8 @@ FLAGS\
 
 ./checkFaceApi\_I --split=./identification
 
-OUT\
- I0824 17:56:28.947021 54252 in\_out.cpp:224] General:\
+OUTPUT EXAMPLE\
+I0824 17:56:28.947021 54252 in\_out.cpp:224] General:\
  fpir - 10^-1, tpir - 0.942\
  fpir - 10^-2, tpir - 0.887\
  fpir - 10^-3, tpir - 0.408

@@ -215,4 +215,4 @@ I0824 17:56:28.948201 54252 in\_out.cpp:224] Rank 20:\
 
 **License**
 
-This project is [MIT](https://github.com/your_username/your_repository/blob/master/LICENSE) licensed.
+This project is [MIT](https://github.com/ChervyakovLM/FaceMetric/blob/main/license.pdf) licensed.

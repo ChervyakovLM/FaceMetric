@@ -144,9 +144,11 @@ class Interface {
 public:
     virtual ~Interface() {}
 
+    // initialization of the algorithm for calculating biometric templates
     virtual ReturnStatus
     initialize(const std::string &configDir) = 0;
 
+    // template calculation
     virtual ReturnStatus
     createTemplate(
         const Multiface &faces,
@@ -155,17 +157,20 @@ public:
         std::vector<EyePair> &eyeCoordinates,
         std::vector<double> &quality) = 0;
 
+    // templates matching
     virtual ReturnStatus
     matchTemplates(
         const std::vector<uint8_t> &verifTemplate,
         const std::vector<uint8_t> &initTemplate,
         double &similarity) = 0;
 
+    // fine-tuning the algorithm for calculating biometric templates
     virtual ReturnStatus
     train(
         const std::string &configDir,
         const std::string &trainedConfigDir) = 0;
 
+    // get a pointer to the implementation
     static std::shared_ptr<Interface>
     getImplementation();
 };

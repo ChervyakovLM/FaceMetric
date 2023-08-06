@@ -61,6 +61,13 @@ string duration_to_string(const duration<T_counter_type, ratio<num, den>>& inter
 
 
 template<typename T_counter_type, typename T_ratio>
+/*!
+ * \brief Convert extended_info_type<nanoseconds> to extended_info_type<duration<T_counter_type, T_ratio>>.
+ *
+ * \param info The extended_info_type<nanoseconds> object to convert.
+ *
+ * \return The converted extended_info_type<duration<T_counter_type, T_ratio>> object.
+ */
 timing::extended_info_type<duration<T_counter_type, T_ratio>> timing::extended_info_cast(const extended_info_type<nanoseconds>& info)
 {
     extended_info_type<duration<T_counter_type, T_ratio>> retval;
@@ -75,6 +82,14 @@ timing::extended_info_type<duration<T_counter_type, T_ratio>> timing::extended_i
 }
 
 template<typename T_counter_type, intmax_t num, intmax_t den>
+/*!
+ * \brief Convert a duration to a string representation with a specified precision.
+ *
+ * \param interval The duration to convert to a string.
+ * \param precision The desired precision for the string representation.
+ *
+ * \return A string representation of the duration with the specified precision and interval type.
+ */
 string duration_to_string(const duration<T_counter_type, ratio<num, den>>& interval, int precision)
 {
     string interval_type;

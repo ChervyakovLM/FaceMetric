@@ -12,6 +12,13 @@ FaceApiExampleV::FaceApiExampleV() {}
 
 FaceApiExampleV::~FaceApiExampleV() {}
 
+/*!
+ * \brief Initialize the face detection and face recognition models.
+ *
+ * \param configDir The path to the directory containing the ONNX model files for face detection and face recognition.
+ *
+ * \return A `ReturnStatus` object indicating the success or failure of the initialization.
+ */
 ReturnStatus
 FaceApiExampleV::initialize(const std::string &configDir)
 {
@@ -21,6 +28,17 @@ FaceApiExampleV::initialize(const std::string &configDir)
     return ReturnStatus(ReturnCode::Success);
 }
 
+/*!
+ * \brief Create a face template from input images using face detection and face recognition models.
+ *
+ * \param images The `Multiface` object containing the input images.
+ * \param role The role of the template.
+ * \param templ The output vector to store the created face template.
+ * \param eyeCoordinates The output vector to store the eye coordinates of the detected face (not used in this implementation).
+ * \param quality The output vector to store the quality of the detected face (not used in this implementation).
+ *
+ * \return A `ReturnStatus` object indicating the success or failure of the template creation.
+ */
 ReturnStatus
 FaceApiExampleV::createTemplate(
         const Multiface &images,
@@ -67,6 +85,15 @@ FaceApiExampleV::createTemplate(
     return ReturnStatus(ReturnCode::RefuseInput);
 }
 
+/*!
+ * \brief Match two face templates to calculate their similarity score.
+ *
+ * \param verifTemplate The vector containing the verification face template.
+ * \param enrollTemplate The vector containing the enrollment face template.
+ * \param similarity The output variable to store the similarity score between the two templates.
+ *
+ * \return A `ReturnStatus` object indicating the success or failure of the template matching.
+ */
 ReturnStatus
 FaceApiExampleV::matchTemplates(
         const std::vector<uint8_t> &verifTemplate,
@@ -83,6 +110,14 @@ FaceApiExampleV::matchTemplates(
     return ReturnStatus(ReturnCode::Success);
 }
 
+/*!
+ * \brief Train the face recognition model.
+ *
+ * \param configDir The directory containing the configuration files for the face recognition model.
+ * \param trainedConfigDir The directory where the trained model configuration will be stored.
+ *
+ * \return A `ReturnStatus` object indicating the success of the training process.
+ */
 FACEAPITEST::ReturnStatus
 FaceApiExampleV::train(
     const std::string &configDir,
@@ -91,6 +126,11 @@ FaceApiExampleV::train(
     return ReturnStatus(ReturnCode::Success);
 }
 
+/*!
+ * \brief Get the implementation of the face recognition API.
+ *
+ * \return A shared pointer to the implementation of the face recognition API.
+ */
 std::shared_ptr<Interface>
 Interface::getImplementation()
 {

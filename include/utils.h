@@ -18,31 +18,129 @@ using namespace std;
 typedef unordered_map<string, shared_ptr<TCLAP::Arg>> params_type;
 
 template<typename T_val>
+/*!
+ * \brief Get the value of a parameter from a shared_ptr to a TCLAP::Arg object.
+ *
+ * \param arg A shared_ptr to a TCLAP::Arg object representing the parameter.
+ *
+ * \return The value of the parameter of type 'T_val'.
+ */
 T_val get_param(shared_ptr<TCLAP::Arg> arg);
 
 template<typename T_stream_type, typename ...Args>
+/*!
+ * \brief Open a file or throw an exception if the file cannot be opened.
+ *
+ * \param file The name or path of the file to open.
+ * \param args Optional arguments to pass to the constructor of 'T_stream_type'.
+ *
+ * \return A unique_ptr to the opened stream object of type 'T_stream_type'.
+ */
 unique_ptr<T_stream_type> open_file_or_die(const string& file, const Args&... args);
 
+/*!
+ * \brief Get the absolute file path from a parameter value using a map of parameters.
+ *
+ * \param arg A shared_ptr to a TCLAP::Arg object representing the parameter.
+ * \param params A map of parameters containing the necessary information for path conversion.
+ *
+ * \return The absolute file path corresponding to the parameter value.
+ */
 string get_abs(shared_ptr<TCLAP::Arg> arg, params_type& params);
 
+/*!
+ * \brief Load and extract bitmap data from an image file.
+ *
+ * \param file The file path of the image to load.
+ * \param gray_flag Flag to indicate whether to convert the image to grayscale.
+ * \param width Reference to store the width of the loaded bitmap.
+ * \param height Reference to store the height of the loaded bitmap.
+ *
+ * \return A shared_ptr to the loaded bitmap data as an array of uint8_t.
+ */
 shared_ptr<uint8_t> get_bitmap(const string& file, bool gray_flag, size_t& width, size_t& height);
 
+/*!
+ * \brief Wait for all child processes to complete and check for errors.
+ */
 void wait_all_forks();
 
 template<typename T_time>
+/*!
+ * \brief Log extended timing information with optional fork index.
+ *
+ * \param The extended timing information to log.
+ * \param The optional index of the forked process (if applicable).
+ */
 void log_extended_info(const timing::extended_info_type<T_time>& info, int fork_index = -1);
 
 template<typename T_val>
+/*!
+ * \brief Convert a value to a string representation with a specified precision.
+ *
+ * \param The value to convert to a string.
+ * \param The desired precision for the string representation.
+ *
+ * \return A string representation of the value with the specified precision.
+ */
 string to_string_form(T_val val, int prec);
 
+/*!
+ * \brief Print parameters with optional filters and warning flag.
+ *
+ * \param params The map of parameters to print.
+ * \param header The header text for the printed output.
+ * \param print_default Flag to indicate whether to print parameters with default values.
+ * \param print_changed Flag to indicate whether to print parameters with changed values.
+ * \param warn_flag Flag to indicate whether to log the output with a warning severity level.
+ */
 void print_params(const params_type& params, const string& header, bool print_default, bool print_changed, bool warn_flag);
+
+/*!
+ * \brief Print pipeline stages based on their corresponding parameters.
+ *
+ * \param params The map of parameters that control each pipeline stage.
+ * \param stages The vector of pipeline stage names in their execution order.
+ */
 void print_pipeline(params_type& params, const vector<string>& stages);
 
+/*!
+ * \brief Extract the filename from a given file path.
+ *
+ * \param file The input file path from which the filename needs to be extracted.
+ *
+ * \return The extracted filename without the path and extension.
+ */
 string get_filename(const string& file);
+
+/*!
+ * \brief Check if a file exists and issue a warning if not found.
+ *
+ * \param list_name The name of the parameter containing the file path to check.
+ * \param params The map of parameters containing the file path parameter.
+ *
+ * \return 'true' if the file exists, 'false' otherwise.
+ */
 bool check_list_warn(const string& list_name, params_type& params);
+
+/*!
+ * \brief Check and modify a vector to ensure the median value lies within a specified range.
+ *
+ * \param arr The input vector of float values to check and possibly modify.
+ * \param min_max_values A pair of float values representing the minimum and maximum allowable median range.
+ */
 void check_median_modify(vector<float>& arr, pair<float, float> min_max_values);
 
 template<typename score_type>
+/*!
+ * \brief Calculate True Positive Rates (TPRs) at specified False Positive Rates (FPRs) for a binary classification model.
+ *
+ * \param matches_true A vector of score_type representing true positive scores.
+ * \param matches_false A vector of score_type representing false positive scores (will be modified by the function).
+ * \param fprs A vector of integers representing the desired False Positive Rates (FPRs) in descending order.
+ *
+ * \return A vector of score_type containing the True Positive Rates (TPRs) corresponding to the given FPRs.
+ */
 vector<score_type> fastROC(const vector<score_type>& matches_true, vector<score_type>& matches_false, const vector<int>& fprs);
 
 
@@ -50,12 +148,27 @@ vector<score_type> fastROC(const vector<score_type>& matches_true, vector<score_
 
 
 template<typename T_val>
+/*!
+ * \brief Get the value of a parameter from a shared_ptr to a TCLAP::Arg object.
+ *
+ * \param arg A shared_ptr to a TCLAP::Arg object representing the parameter.
+ *
+ * \return The value of the parameter of type 'T_val'.
+ */
 T_val get_param(shared_ptr<TCLAP::Arg> arg)
 {
     return dynamic_cast<TCLAP::ValueArg<T_val>*>(arg.get())->getValue();
 }
 
 template<typename T_stream_type, typename ...Args>
+/*!
+ * \brief Open a file or throw an exception if the file cannot be opened.
+ *
+ * \param file The name or path of the file to open.
+ * \param args Optional arguments to pass to the constructor of 'T_stream_type'.
+ *
+ * \return A unique_ptr to the opened stream object of type 'T_stream_type'.
+ */
 unique_ptr<T_stream_type> open_file_or_die(const string& file, const Args&... args)
 {
     unique_ptr<T_stream_type> stream_ptr(new T_stream_type(file, args...));
@@ -66,6 +179,12 @@ unique_ptr<T_stream_type> open_file_or_die(const string& file, const Args&... ar
 }
 
 template<typename T_time>
+/*!
+ * \brief Log extended timing information with an optional fork index.
+ *
+ * \param info The timing::extended_info_type object containing the extended timing information.
+ * \param fork_index The optional index of the forked process (if applicable).
+ */
 void log_extended_info(const timing::extended_info_type<T_time>& info, int fork_index)
 {
     stringstream buf;
@@ -87,6 +206,14 @@ void log_extended_info(const timing::extended_info_type<T_time>& info, int fork_
 }
 
 template<typename T_val>
+/*!
+ * \brief Convert a value to a string representation with a specified precision.
+ *
+ * \param val The value to convert to a string.
+ * \param prec The desired precision for the string representation.
+ *
+ * \return A string representation of the value with the specified precision.
+ */
 string to_string_form(T_val val, int prec)
 {
     stringstream buf;
@@ -95,6 +222,15 @@ string to_string_form(T_val val, int prec)
 }
 
 template<typename score_type>
+/*!
+ * \brief Calculate True Positive Rates (TPRs) at specified False Positive Rates (FPRs) for binary classification.
+ *
+ * \param matches_true A vector of score_type representing true positive scores.
+ * \param matches_false A vector of score_type representing false positive scores (will be modified by the function).
+ * \param fprs A vector of integers representing the desired False Positive Rates (FPRs) in ascending order.
+ *
+ * \return A vector of score_type containing the True Positive Rates (TPRs) corresponding to the given FPRs.
+ */
 vector<score_type> fastROC(const vector<score_type>& matches_true, vector<score_type>& matches_false, const vector<int>& fprs)
 {
     vector<size_t> fprs_ids(fprs.size());

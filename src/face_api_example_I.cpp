@@ -14,6 +14,14 @@ FaceApiExampleI::FaceApiExampleI() {}
 
 FaceApiExampleI::~FaceApiExampleI() {}
 
+/*!
+ * \brief initializeTemplateCreation - Initializes the face template creation process.
+ *
+ * \param configDir The directory where the ONNX model files and other configuration files are located.
+ * \param role The template role to be used during template creation.
+ *
+ * \return A ReturnStatus object indicating the success or failure of the initialization process.
+ */
 ReturnStatus
 FaceApiExampleI::initializeTemplateCreation(
     const std::string &configDir,
@@ -25,6 +33,16 @@ FaceApiExampleI::initializeTemplateCreation(
     return ReturnStatus(ReturnCode::Success);
 }
 
+/*!
+ * \brief createTemplate - Creates a face template from the input images using the face detector and face recognizer.
+ *
+ * \param images A vector of Multiface objects containing the input face images.
+ * \param role The template role to be used during template creation.
+ * \param templ A vector to store the extracted facial features (face template).
+ * \param eyeCoordinates A vector to store the eye coordinates of the detected face.
+ *
+ * \return A ReturnStatus object indicating the success or failure of the template creation process.
+ */
 ReturnStatus
 FaceApiExampleI::createTemplate(
     const Multiface &images,
@@ -70,6 +88,16 @@ FaceApiExampleI::createTemplate(
     return ReturnStatus(ReturnCode::RefuseInput);
 }
 
+/*!
+ * \brief finalizeInit - Finalizes the initialization of the face recognition system.
+ *
+ * \param configDir The path to the configuration directory containing model files for face detection and recognition.
+ * \param initDir The path to the initialization directory.
+ * \param edbName The path to the enrolled database (edb) file.
+ * \param edbManifestName The path to the edb manifest file.
+ *
+ * \return A ReturnStatus object indicating the success or failure of the initialization process.
+ */
 ReturnStatus
 FaceApiExampleI::finalizeInit(
     const std::string &configDir,
@@ -99,6 +127,14 @@ FaceApiExampleI::finalizeInit(
     return ReturnStatus(ReturnCode::Success);
 }
 
+/*!
+ * \brief initializeIdentification - Initializes the face identification system.
+ *
+ * \param configDir The path to the configuration directory containing model files for face detection and recognition.
+ * \param initDir The path to the initialization directory.
+ *
+ * \return A ReturnStatus object indicating the success or failure of the initialization process.
+ */
 ReturnStatus
 FaceApiExampleI::initializeIdentification(
     const std::string &configDir,
@@ -112,6 +148,16 @@ FaceApiExampleI::initializeIdentification(
     return ReturnStatus(ReturnCode::Success);
 }
 
+/*!
+ * \brief identifyTemplate - Identifies the template against the gallery of enrolled templates.
+ *
+ * \param idTemplate The input template to be identified.
+ * \param candidateListLength The number of top candidates to be returned in the candidateList.
+ * \param candidateList A vector of Candidate objects representing the top candidates with their similarity scores.
+ * \param decision A boolean variable indicating the success of the identification process.
+ *
+ * \return A ReturnStatus object indicating the success or failure of the identification process.
+ */
 ReturnStatus
 FaceApiExampleI::identifyTemplate(
     const std::vector<uint8_t> &idTemplate,
@@ -143,6 +189,14 @@ FaceApiExampleI::identifyTemplate(
     return ReturnStatus(ReturnCode::Success);
 }
 
+/*!
+ * \brief galleryInsertID - Inserts a template into the gallery with the specified ID.
+ *
+ * \param templ The template data to be inserted into the gallery.
+ * \param id The ID associated with the template in the gallery.
+ *
+ * \return A ReturnStatus object indicating the success or failure of the insertion process.
+ */
 ReturnStatus
 FaceApiExampleI::galleryInsertID(
     const std::vector<uint8_t> &templ,
@@ -153,6 +207,13 @@ FaceApiExampleI::galleryInsertID(
     return ReturnStatus(ReturnCode::Success);
 }
 
+/*!
+ * \brief galleryDeleteID - Deletes a template from the gallery with the specified ID.
+ *
+ * \param id The ID of the template to be deleted from the gallery.
+ *
+ * \return A ReturnStatus object indicating the success or failure of the deletion process.
+ */
 ReturnStatus
 FaceApiExampleI::galleryDeleteID(
     const std::string &id)
@@ -162,7 +223,11 @@ FaceApiExampleI::galleryDeleteID(
     return ReturnStatus(ReturnCode::Success);
 }
 
-
+/*!
+ * \brief getImplementation - Returns a shared pointer to the implementation of the IdentInterface.
+ *
+ * \return A shared pointer to the implementation of the IdentInterface.
+ */
 std::shared_ptr<IdentInterface>
 IdentInterface::getImplementation()
 {

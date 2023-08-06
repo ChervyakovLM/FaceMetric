@@ -8,9 +8,24 @@
 using namespace std;
 
 template<typename T_ReturnCode>
+/*!
+ * \brief Converts a T_ReturnCode to a string representation.
+ *
+ * \param code The T_ReturnCode value to convert.
+ *
+ * \return The string representation of the T_ReturnCode.
+ */
 string errcode_to_string(const T_ReturnCode& code);
 
 template<typename T_FACEAPI, bool create_manifest_flag>
+/*!
+ * \brief Extracts face templates from input images and creates descriptors.
+ *
+ * \param face_api_ptr A shared pointer to a typename T_FACEAPI::face_api_type object representing the face API.
+ * \param params A reference to a params_type object containing input parameters.
+ * \param output_dir The directory where the output files will be written.
+ * \param list_name The name of the list file containing image paths.
+ */
 void FACEAPI_extract_template(shared_ptr<typename T_FACEAPI::face_api_type> face_api_ptr, params_type& params, const string& output_dir, const string& list_name);
 
 
@@ -18,6 +33,13 @@ void FACEAPI_extract_template(shared_ptr<typename T_FACEAPI::face_api_type> face
 
 
 template<typename T_ReturnCode>
+/*!
+ * \brief Converts a T_ReturnCode to a string representation.
+ *
+ * \param code The T_ReturnCode value to convert.
+ *
+ * \return The string representation of the T_ReturnCode.
+ */
 string errcode_to_string(const T_ReturnCode& code)
 {
     stringstream string_stream;
@@ -26,6 +48,14 @@ string errcode_to_string(const T_ReturnCode& code)
 }
 
 template<typename T_FACEAPI, bool create_manifest_flag>
+/*!
+ * \brief Extracts face templates from input images and creates descriptors.
+ *
+ * \param face_api_ptr A shared pointer to a typename T_FACEAPI::face_api_type object representing the face API.
+ * \param params A reference to a params_type object containing input parameters.
+ * \param output_dir The directory where the output files will be written.
+ * \param list_name The name of the list file containing image paths.
+ */
 void FACEAPI_extract_template(shared_ptr<typename T_FACEAPI::face_api_type> face_api_ptr, params_type& params, const string& output_dir, const string& list_name)
 {
     const string list_file = get_abs(params[list_name], params);

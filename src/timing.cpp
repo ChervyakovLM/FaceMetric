@@ -4,16 +4,29 @@
 
 #include "timing.h"
 
+/*!
+ * \brief Constructor for the timing class.
+ *
+ * \param extended If true, enables extended timing information collection.
+ */
 timing::timing(bool extended) : m_acc(0), m_call_counter(0), m_extended(extended)
 {
 
 }
 
+/*!
+ * \brief Start the timer by recording the current high-resolution clock time.
+ */
 void timing::start()
 {
     m_tstart = high_resolution_clock::now();
 }
 
+/*!
+ * \brief Stops the timing measurement and returns the time interval.
+ *
+ * \return The time interval between the previous start() and the current stop() in nanoseconds.
+ */
 nanoseconds timing::stop()
 {
     const high_resolution_clock::time_point tstop = high_resolution_clock::now();
@@ -28,6 +41,11 @@ nanoseconds timing::stop()
     return interval;
 }
 
+/*!
+ * \brief Calculates the average time interval over multiple start-stop cycles.
+ *
+ * \return The average time interval in nanoseconds, or -1 if no timing cycles have been performed.
+ */
 nanoseconds timing::get_average()
 {
     if(m_call_counter)
@@ -41,6 +59,13 @@ nanoseconds timing::get_average()
         return nanoseconds(-1);
 }
 
+/*!
+ * \brief Calculates extended information about the timing intervals.
+ *
+ * \param percentile The desired percentile value (between 0 and 1) for calculating the value at that percentile.
+ *
+ * \return The extended timing information, or default values if not available.
+ */
 timing::extended_info_type<nanoseconds> timing::get_extended_info(float percentile)
 {
     if(m_extended && m_values.size() > 1 && (percentile >= 0 && percentile <= 1))

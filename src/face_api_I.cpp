@@ -4,6 +4,13 @@
 
 constexpr int FACEAPI::mc_ranks[];
 
+/*!
+ * \brief Performs the extraction stage for the FACEAPI identification.
+ *
+ * \param face_api_ptr A shared_ptr to an instance of IdentInterface representing the FACEAPI for identification.
+ * \param params A reference to a params_type representing the input parameters.
+ * \param output_dir A string representing the output directory where the results will be stored.
+ */
 void FACEAPI_extract(shared_ptr<IdentInterface> face_api_ptr, params_type& params, const string& output_dir)
 {
     struct ident_traits
@@ -30,6 +37,18 @@ void FACEAPI_extract(shared_ptr<IdentInterface> face_api_ptr, params_type& param
         FACEAPI_extract_template<ident_traits, false>(face_api_ptr, params, output_dir, "insert_list");
 }
 
+/*!
+ * \brief Calls the createTemplate function of the IdentInterface to create a template.
+ *
+ * \param face_api_ptr A shared_ptr to an instance of IdentInterface representing the FACEAPI for identification.
+ * \param faces A constant reference to a Multiface object representing the input faces for template creation.
+ * \param role A TemplateRole representing the role of the template.
+ * \param templ A reference to a vector of uint8_t where the created template will be stored.
+ * \param eyeCoordinates A reference to a vector of EyePair where the eye coordinates of the template will be stored.
+ * \param quality A reference to a vector of double where the quality of the template will be stored (Not used in the function).
+ *
+ * \return A ReturnStatus indicating the status of the template creation.
+ */
 ReturnStatus createTemplateParam(shared_ptr<IdentInterface> face_api_ptr, const Multiface &faces, TemplateRole role, vector<uint8_t> &templ, vector<EyePair> &eyeCoordinates, vector<double>&)
 {
     return face_api_ptr->createTemplate(faces, role, templ, eyeCoordinates);
@@ -44,6 +63,13 @@ int string_id_to_annot_id(const string& string_id)
     return stoi(string_id.substr(pos, string_id.length() - pos));
 }
 
+/*!
+ * \brief Performs face template identification using the given IdentInterface instance.
+ *
+ * \param face_api_ptr A shared_ptr to an instance of IdentInterface representing the FACEAPI for identification.
+ * \param params A reference to a params_type object representing the input parameters for the search.
+ * \param output_dir A constant reference to a string representing the output directory where the results will be stored.
+ */
 void FACEAPI::search(shared_ptr<IdentInterface> face_api_ptr, params_type& params, const string& output_dir)
 {
     LOG(INFO) << "identifyTemplate start...";
@@ -168,6 +194,11 @@ void FACEAPI::search(shared_ptr<IdentInterface> face_api_ptr, params_type& param
         log_extended_info(timing::extended_info_cast<double, milli>(timer.get_extended_info(get_param<uint>(params["percentile"]) / 100.f)));
 }
 
+/*!
+ * \brief Calculates the True Positive Identification Rate (TPIR) for different ranks.
+ *
+ * \param output_dir A constant reference to a string representing the output directory where the results will be stored.
+ */
 void FACEAPI::tpir(const string& output_dir)
 {
     LOG(INFO) << "calc TPIRs start...";
@@ -197,6 +228,13 @@ void FACEAPI::tpir(const string& output_dir)
     LOG(INFO) << "calc TPIR done, time - " << duration_to_string(duration<double, milli>(interval), 2);
 }
 
+/*!
+ * \brief Inserts face descriptors into the gallery.
+ *
+ * \param face_api_ptr A shared pointer to an IdentInterface object representing the face API.
+ * \param params A reference to a params_type object containing input parameters.
+ * \param output_dir A constant reference to a string representing the output directory.
+ */
 void FACEAPI::insert(shared_ptr<IdentInterface> face_api_ptr, params_type& params, const string& output_dir)
 {
     LOG(INFO) << "galleryInsertID start...";
@@ -232,6 +270,12 @@ void FACEAPI::insert(shared_ptr<IdentInterface> face_api_ptr, params_type& param
         log_extended_info(timing::extended_info_cast<double, milli>(timer.get_extended_info(get_param<uint>(params["percentile"]) / 100.f)));
 }
 
+/*!
+ * \brief Removes face descriptors from the gallery.
+ *
+ * \param face_api_ptr A shared pointer to an IdentInterface object representing the face API.
+ * \param params A reference to a params_type object containing input parameters.
+ */
 void FACEAPI::remove(shared_ptr<IdentInterface> face_api_ptr, params_type& params)
 {
     LOG(INFO) << "galleryDeleteID start...";

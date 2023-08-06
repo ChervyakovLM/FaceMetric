@@ -6,6 +6,15 @@
 
 #include "utils.h"
 
+/*!
+ * \brief Converts a parameter to its string representation.
+ *
+ * \param param The shared pointer to the parameter to be converted.
+ *
+ * \return The string representation of the parameter value.
+ *
+ * \throws runtime_error if the parameter type is not supported.
+ */
 string param_to_string(shared_ptr<TCLAP::Arg> param)
 {
     {
@@ -32,6 +41,15 @@ string param_to_string(shared_ptr<TCLAP::Arg> param)
     throw runtime_error("unsupported param type");
 }
 
+/*!
+ * \brief Print parameters with optional filters and warning flag.
+ *
+ * \param params The map of parameters to print.
+ * \param header The header text for the printed output.
+ * \param print_default Flag to indicate whether to print parameters with default values.
+ * \param print_changed Flag to indicate whether to print parameters with changed values.
+ * \param warn_flag Flag to indicate whether to log the output with a warning severity level.
+ */
 void print_params(const params_type& params, const string& header, bool print_default, bool print_changed, bool warn_flag)
 {
     stringstream buf;
@@ -49,6 +67,12 @@ void print_params(const params_type& params, const string& header, bool print_de
     (warn_flag ? LOG(WARNING) : LOG(INFO)) << buf.rdbuf();
 }
 
+/*!
+ * \brief Print pipeline stages based on their corresponding parameters.
+ *
+ * \param params The map of parameters that control each pipeline stage.
+ * \param stages The vector of pipeline stage names in their execution order.
+ */
 void print_pipeline(params_type& params, const vector<string>& stages)
 {
     stringstream buf;
@@ -66,6 +90,14 @@ void print_pipeline(params_type& params, const vector<string>& stages)
     LOG(INFO) << buf.rdbuf();
 }
 
+/*!
+ * \brief Converts a relative file path to an absolute file path based on the 'split' parameter.
+ *
+ * \param original The relative file path that needs to be converted to an absolute path.
+ * \param params The dictionary containing parameters, including the 'split' parameter used as the base directory.
+ *
+ * \return The absolute file path as a string.
+ */
 string relative_to_abs(const string& original, params_type& params)
 {
     string gen_path = original;
@@ -77,11 +109,29 @@ string relative_to_abs(const string& original, params_type& params)
     return gen_path;
 }
 
+/*!
+ * \brief Get the absolute file path from a parameter value using a map of parameters.
+ *
+ * \param arg A shared_ptr to a TCLAP::Arg object representing the parameter.
+ * \param params A map of parameters containing the necessary information for path conversion.
+ *
+ * \return The absolute file path corresponding to the parameter value.
+ */
 string get_abs(shared_ptr<TCLAP::Arg> arg, params_type& params)
 {
     return relative_to_abs(get_param<string>(arg), params);
 }
 
+/*!
+ * \brief Load and extract bitmap data from an image file.
+ *
+ * \param file The file path of the image to load.
+ * \param gray_flag Flag to indicate whether to convert the image to grayscale.
+ * \param width Reference to store the width of the loaded bitmap.
+ * \param height Reference to store the height of the loaded bitmap.
+ *
+ * \return A shared_ptr to the loaded bitmap data as an array of uint8_t.
+ */
 shared_ptr<uint8_t> get_bitmap(const string& file, bool gray_flag, size_t& width, size_t& height)
 {
     FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -123,6 +173,9 @@ shared_ptr<uint8_t> get_bitmap(const string& file, bool gray_flag, size_t& width
     return data;
 }
 
+/*!
+ * \brief Wait for all child processes to complete and check for errors.
+ */
 void wait_all_forks()
 {
     int status;
@@ -150,6 +203,13 @@ void wait_all_forks()
     }
 }
 
+/*!
+ * \brief Extract the filename from a given file path.
+ *
+ * \param file The input file path from which the filename needs to be extracted.
+ *
+ * \return The extracted filename without the path and extension.
+ */
 string get_filename(const string& file)
 {
     size_t begin_pos = file.rfind('/');
@@ -161,6 +221,14 @@ string get_filename(const string& file)
     return file.substr(begin_pos + 1, end_pos - begin_pos - 1);
 }
 
+/*!
+ * \brief Check if a file exists and issue a warning if not found.
+ *
+ * \param list_name The name of the parameter containing the file path to check.
+ * \param params The map of parameters containing the file path parameter.
+ *
+ * \return 'true' if the file exists, 'false' otherwise.
+ */
 bool check_list_warn(const string& list_name, params_type& params)
 {
     string filename = get_abs(params[list_name], params);
@@ -175,6 +243,12 @@ bool check_list_warn(const string& list_name, params_type& params)
     }
 }
 
+/*!
+ * \brief Check and modify a vector to ensure the median value lies within a specified range.
+ *
+ * \param arr The input vector of float values to check and possibly modify.
+ * \param min_max_values A pair of float values representing the minimum and maximum allowable median range.
+ */
 void check_median_modify(vector<float>& arr, pair<float, float> min_max_values)
 {
     size_t pos = arr.size() / 2;

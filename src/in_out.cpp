@@ -31,6 +31,15 @@ public:
     }
 };
 
+/*!
+ * \brief Read input for extraction and create shared_ptr to input_list_type.
+ *
+ * \param file The file path containing the input data.
+ * \param count_proc The number of extraction processes.
+ * \param count_templ Output parameter to store the count of templates read.
+ *
+ * \return A shared_ptr to input_list_type containing the read input data.
+ */
 shared_ptr<input_list_type> read_input_extract(const string& file, uint count_proc, size_t& count_templ)
 {
     unique_ptr<ifstream> input_stream = open_file_or_die<ifstream>(file);
@@ -109,6 +118,13 @@ shared_ptr<input_list_type> read_input_extract(const string& file, uint count_pr
     return retval;
 }
 
+/*!
+ * \brief Write a manifest file based on the descriptors read from the desc_file.
+ *
+ * \param out_file The file path to write the manifest data.
+ * \param desc_file The file path containing the descriptor data.
+ * \param desc_size The descriptor size.
+ */
 void write_manifest(const string& out_file, const string& desc_file, uint desc_size)
 {
     shared_ptr<in_out_desc_type> descriptors = read_input_match_search(desc_file, desc_size, false, "db");
@@ -124,6 +140,17 @@ void write_manifest(const string& out_file, const string& desc_file, uint desc_s
     }
 }
 
+/*!
+ * \brief Read input for match or search and create shared_ptr to in_out_desc_type.
+ *
+ * \param file The file path containing the input data.
+ * \param desc_size The descriptor size.
+ * \param match_log A boolean flag indicating whether to log match count (not used in this function).
+ * \param log_prefix The log prefix to use in case of logging (not used in this function).
+ * \param counters_file The file path to write the count of descriptors and refusals (not used in this function).
+ *
+ * \return A shared_ptr to in_out_desc_type containing the read input data.
+ */
 shared_ptr<in_out_desc_type> read_input_match_search(const string& file, uint desc_size, bool match_log, const string& log_prefix, const string& counters_file)
 {
     unique_ptr<ifstream> desc_binstream = open_file_or_die<ifstream>(file, ifstream::binary);
@@ -169,12 +196,24 @@ shared_ptr<in_out_desc_type> read_input_match_search(const string& file, uint de
     return descriptors;
 }
 
+/*!
+ * \brief Write match or search output to a binary file.
+ *
+ * \param file The file path to write the output data.
+ * \param matches A vector of floats containing the match or search output data.
+ */
 void write_output_match_search(const string& file, const vector<float>& matches)
 {
     unique_ptr<ofstream> matches_stream = open_file_or_die<ofstream>(file, ofstream::binary);
     matches_stream->write(reinterpret_cast<const char*>(matches.data()), static_cast<long>(matches.size() * sizeof(float)));
 }
 
+/*!
+ * \brief Read match data from a binary file and store it in a vector of floats.
+ *
+ * \param file The file path containing the match data.
+ * \param matches A vector of floats to store the read match data.
+ */
 void match_data_to_vector(const string& file, vector<float>& matches)
 {
     unique_ptr<ifstream> matches_stream = open_file_or_die<ifstream>(file, ifstream::binary | ifstream::ate);
@@ -184,6 +223,14 @@ void match_data_to_vector(const string& file, vector<float>& matches)
     matches_stream->read(reinterpret_cast<char*>(matches.data()), static_cast<long>(file_size));
 }
 
+/*!
+ * \brief Read input for ROC and create shared_ptr to matches_type.
+ *
+ * \param file_true The file path containing true positive match data.
+ * \param file_false The file path containing false positive match data.
+ *
+ * \return A shared_ptr to matches_type containing the read input data.
+ */
 shared_ptr<matches_type> read_input_ROC_tpir(const string& file_true, const string& file_false)
 {
     auto matches = make_shared<matches_type>();
@@ -194,6 +241,15 @@ shared_ptr<matches_type> read_input_ROC_tpir(const string& file_true, const stri
     return matches;
 }
 
+/*!
+ * \brief Write ROC or TPIR output to a file and log the result.
+ *
+ * \param file The file path to write the output data.
+ * \param fprs A vector of integers containing false positive rates.
+ * \param tprs A vector of floats containing true positive rates.
+ * \param prefixes A pair of strings representing prefixes for the output.
+ * \param rank An integer representing the rank value (-1 for general results).
+ */
 void write_output_ROC_tpir(const string& file, const vector<int>& fprs, const vector<float>& tprs, const pair<string, string>& prefixes, int rank)
 {
     if(fprs.size() != tprs.size())

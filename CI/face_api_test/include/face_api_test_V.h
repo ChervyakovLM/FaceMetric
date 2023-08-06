@@ -144,11 +144,26 @@ class Interface {
 public:
     virtual ~Interface() {}
 
-    // initialization of the algorithm for calculating biometric templates
+    /*!
+     * \brief Initialize the face recognition API.
+     *
+     * \param configDir The path to the configuration directory containing the necessary files for initializing the face recognition API.
+     *
+     * \return A ReturnStatus object indicating the status of the initialization process.
+     */
     virtual ReturnStatus
     initialize(const std::string &configDir) = 0;
 
-    // template calculation
+    /*!
+     * \brief Create a template from multiple face images.
+     *
+     * \param faces The multiple face images from which to create the template.
+     * \param role The role of the template to be created (e.g., TemplateRole::Init_V, TemplateRole::Verification, etc.).
+     * \param templ The output vector that will store the created template data.
+     * \param eyeCoordinates The output vector that will store the eye coordinates for each face image in the template (if applicable).
+     *
+     * \return The return status of the template creation process (e.g., success or failure).
+     */
     virtual ReturnStatus
     createTemplate(
         const Multiface &faces,
@@ -157,20 +172,41 @@ public:
         std::vector<EyePair> &eyeCoordinates,
         std::vector<double> &quality) = 0;
 
-    // templates matching
+    /*!
+     * \brief Create a face template from the input face images.
+     *
+     * \param faces The Multiface object containing the input face images.
+     * \param role The template role.
+     * \param templ Output vector to store the created face template.
+     * \param eyeCoordinates Output vector to store the eye coordinates of the detected face(s).
+     * \param quality Output vector to store the quality values of the detected face(s).
+     *
+     * \return A ReturnStatus object indicating the status of the face template creation process.
+     */
     virtual ReturnStatus
     matchTemplates(
         const std::vector<uint8_t> &verifTemplate,
         const std::vector<uint8_t> &initTemplate,
         double &similarity) = 0;
 
-    // fine-tuning the algorithm for calculating biometric templates
+    /*!
+     * \brief Fine-tuning the face recognition model using the provided configuration and save the trained model to the specified directory.
+     *
+     * \param configDir The directory containing the configuration files required for training the face recognition model.
+     * \param trainedConfigDir The directory where the trained face recognition model will be saved.
+     *
+     * \return A ReturnStatus object indicating the status of the training process.
+     */
     virtual ReturnStatus
     train(
         const std::string &configDir,
         const std::string &trainedConfigDir) = 0;
 
-    // get a pointer to the implementation
+    /*!
+     * \brief Get the implementation of the Interface.
+     *
+     * \return A shared pointer to the implementation of the Interface.
+     */
     static std::shared_ptr<Interface>
     getImplementation();
 };

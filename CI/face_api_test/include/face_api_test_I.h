@@ -48,6 +48,7 @@ public:
      * \param initDir The directory path where the initialization files are located.
      * \param edbName The name of the embedded database file.
      * \param edbManifestName The name of the manifest file for the embedded database.
+     * \param outDir The path to write files containing templates.
      *
      * \return The return status of the finalization process (e.g., success or failure).
      */
@@ -56,20 +57,23 @@ public:
     	const std::string &configDir,
         const std::string &initDir,
         const std::string &edbName,
-        const std::string &edbManifestName) = 0;
+        const std::string &edbManifestName,
+        const std::string &outdir) = 0;
 
     /*!
      * \brief Initialize the face identification process.
      *
      * \param configDir The directory path where the configuration files are located.
      * \param initDir The directory path where the initialization files are located.
+     * \param outDir The path to read files containing templates.
      *
      * \return The return status of the initialization process (e.g., success or failure).
      */
     virtual ReturnStatus
     initializeIdentification(
         const std::string &configDir,
-        const std::string &initDir) = 0;
+        const std::string &initDir,
+        const std::string &outDir) = 0;
 
     /*!
      * \brief Identify a face template against a gallery of templates.

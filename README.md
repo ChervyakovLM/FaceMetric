@@ -90,6 +90,10 @@ REQUIREMENTS\
  glog\
  tclap\
  opencv\>=4.6.0
+ opencv_contrib
+
+BUILD OpenCV\
+cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local -DOPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules ..
 
 BUILD\
  cmake -DCMAKE\_BUILD\_TYPE=Release -DCMAKE\_INSTALL\_PREFIX=../Release -DTCLAP\_INCLUDE\_DIR={PATH}/tclap/include -DFACE\_API\_ROOT\_DIR={PATH}/FaceMetric/CI/face\_api\_test ..

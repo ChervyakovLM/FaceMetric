@@ -95,6 +95,7 @@ FaceApiExampleI::createTemplate(
  * \param initDir The path to the initialization directory.
  * \param edbName The path to the enrolled database (edb) file.
  * \param edbManifestName The path to the edb manifest file.
+ * \param outDir The path to write files containing templates.
  *
  * \return A ReturnStatus object indicating the success or failure of the initialization process.
  */
@@ -103,7 +104,8 @@ FaceApiExampleI::finalizeInit(
     const std::string &configDir,
     const std::string &initDir,
     const std::string &edbName,
-    const std::string &edbManifestName)
+    const std::string &edbManifestName,
+    const std::string &outDir)
 {
     fstream file(edbManifestName);
     FILE* edb = fopen(edbName.c_str(), "rb");
@@ -124,6 +126,8 @@ FaceApiExampleI::finalizeInit(
     }
     fclose(edb);
 
+    WriteFiles(outDir, this->templates);
+
     return ReturnStatus(ReturnCode::Success);
 }
 
@@ -132,18 +136,22 @@ FaceApiExampleI::finalizeInit(
  *
  * \param configDir The path to the configuration directory containing model files for face detection and recognition.
  * \param initDir The path to the initialization directory.
+ * \param outDir The path to read files containing templates.
  *
  * \return A ReturnStatus object indicating the success or failure of the initialization process.
  */
 ReturnStatus
 FaceApiExampleI::initializeIdentification(
     const std::string &configDir,
-    const std::string &initDir)
+    const std::string &initDir,
+    const std::string &outDir)
 {
     if (!detector_)
         detector_ = FaceDetectorYN::create(configDir + "/face_detection_yunet_2022mar.onnx", "", {320, 320});
     if (!face_recognizer_)
         face_recognizer_ = FaceRecognizerSF::create(configDir + "/face_recognition_sface_2021dec.onnx", "");
+
+    ReadTextBinaryFromFiles(outDir, templates);
 
     return ReturnStatus(ReturnCode::Success);
 }

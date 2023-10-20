@@ -2,6 +2,7 @@
 
 #include <map>
 #include "face_api_test_I.h"
+#include "in_out_I.h"
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/dnn.hpp>
@@ -50,6 +51,7 @@ public:
      * \param initDir The path to the initialization directory.
      * \param edbName The path to the enrolled database (edb) file.
      * \param edbManifestName The path to the edb manifest file.
+     * \param outDir The path to write files containing templates.
      *
      * \return A ReturnStatus object indicating the success or failure of the initialization process.
      */
@@ -58,20 +60,23 @@ public:
         const std::string &configDir,
         const std::string &initDir,
         const std::string &edbName,
-        const std::string &edbManifestName) override;
+        const std::string &edbManifestName,
+        const std::string &outDir) override;
 
     /*!
      * \brief Initializes the face identification system.
      *
      * \param configDir The path to the configuration directory containing model files for face detection and recognition.
      * \param initDir The path to the initialization directory.
+     * \param outDir The path to read files containing templates.
      *
      * \return A ReturnStatus object indicating the success or failure of the initialization process.
      */
     FACEAPITEST::ReturnStatus
     initializeIdentification(
         const std::string &configDir,
-        const std::string &initDir) override;
+        const std::string &initDir,
+        const std::string &outDir) override;
 
     /*!
      * \brief Identifies the template against the gallery of enrolled templates.

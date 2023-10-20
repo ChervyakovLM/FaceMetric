@@ -30,3 +30,19 @@ void write_output_search_ranks(const string& output_dir, const vector<pair<uint,
  * \return A vector of strings containing the read data from the remove_file.
  */
 vector<string> read_input_remove(const string& remove_file);
+
+/*!
+ * \brief Write std::map to 2 files.
+ *
+ * \param output_dir The file path containing the files to write.
+ * \param templates The map of templates.
+ */
+void WriteFiles(const std::string& output_dir, const std::map<std::string, std::vector<uint8_t>>& templates);
+
+/*!
+ * \brief Read 2 files to std::map.
+ *
+ * \param input_dir The file path containing the files to read.
+ * \param templates The map of templates.
+ */
+void ReadTextBinaryFromFiles(const std::string &input_dir, std::map<std::string, std::vector<uint8_t>>& templates);

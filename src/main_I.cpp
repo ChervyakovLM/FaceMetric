@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
             LOG(INFO) << "finalizeEnrollment start...";
             timer.start();
             ReturnStatus status = face_api_ptr->finalizeInit(get_abs(params["config"], params), output_dir + "/enroll", output_dir + "/" + get_filename(get_abs(params["db_list"], params)) + ".bin",
-                                                               output_dir + "/manifest.txt");
+                                                               output_dir + "/manifest.txt", output_dir);
             auto interval = timer.stop();
             if(status.code != ReturnCode::Success)
                 throw runtime_error("finalizeEnrollment failed, status: " + errcode_to_string(status.code));
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
         {
             LOG(INFO) << "initializeIdentification start...";
             timer.start();
-            ReturnStatus status = face_api_ptr->initializeIdentification(get_abs(params["config"], params), output_dir + "/enroll");
+            ReturnStatus status = face_api_ptr->initializeIdentification(get_abs(params["config"], params), output_dir + "/enroll", output_dir);
             auto interval = timer.stop();
             if(status.code != ReturnCode::Success)
                 throw runtime_error("initializeIdentification failed, status: " + errcode_to_string(status.code));

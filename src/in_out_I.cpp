@@ -52,3 +52,59 @@ vector<string> read_input_remove(const string& remove_file)
 
     return remove_list;
 }
+
+/*!
+ * \brief Write std::map to 2 files.
+ *
+ * \param output_dir The file path containing the files to write.
+ * \param templates The map of templates.
+ */
+void WriteFiles(const std::string& output_dir, const std::map<std::string, std::vector<uint8_t>>& templates)
+{
+    std::string text_file = output_dir + "/text_data.txt";
+    unique_ptr<ofstream> textFile = open_file_or_die<ofstream>(text_file);
+
+    std::string binary_file = output_dir + "/binary_data.bin";
+    unique_ptr<ofstream> binaryFile = open_file_or_die<ofstream>(binary_file, ofstream::binary);
+
+    for (const auto& pair : templates)
+    {
+        *textFile << pair.first << std::endl;
+
+        uint32_t vectorSize = static_cast<uint32_t>(pair.second.size());
+        binaryFile->write(reinterpret_cast<char*>(&vectorSize), sizeof(uint32_t));
+
+        binaryFile->write(reinterpret_cast<const char*>(pair.second.data()), vectorSize);
+    }
+}
+
+/*!
+ * \brief Read 2 files to std::map.
+ *
+ * \param input_dir The file path containing the files to read.
+ * \param templates The map of templates.
+ */
+void ReadTextBinaryFromFiles(const std::string &input_dir, std::map<std::string, std::vector<uint8_t>>& templates)
+{
+    templates.clear();
+
+    unique_ptr<std::ifstream> binaryFile = open_file_or_die<ifstream>(input_dir + "/binary_data.bin");
+    unique_ptr<std::ifstream> textFile = open_file_or_die<ifstream>(input_dir + "/text_data.txt");
+
+    while (!textFile->eof())
+    {
+        std::string key;
+        std::getline(*textFile, key);
+
+        if (!key.empty())
+        {
+            uint32_t vectorSize;
+            binaryFile->read(reinterpret_cast<char*>(&vectorSize), sizeof(uint32_t));
+
+            std::vector<uint8_t> data(vectorSize);
+            binaryFile->read(reinterpret_cast<char*>(data.data()), vectorSize);
+
+            templates[key] = data;
+        }
+    }
+}

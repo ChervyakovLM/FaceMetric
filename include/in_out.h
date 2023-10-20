@@ -3,6 +3,7 @@
 #include <semaphore.h>
 #include <fcntl.h>
 
+#include <map>
 #include <memory>
 #include <vector>
 #include <fstream>
